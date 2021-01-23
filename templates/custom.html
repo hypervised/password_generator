@@ -35,10 +35,12 @@
             <div style="margin-left: 25px;">
                 Ambiguos Characters
             </div>
-
-
         </div>
         <button type="submit" class="btn btn-success">Generate Password</button>
+        <br>
+        <div>
+            <input type="text" class="text" id="password" name="password" placeholder="Password">
+        </div>
     </form>{% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
 

@@ -124,7 +124,7 @@ class password:
             new_character = random.choice(getattr(self, selected_character_set))
             generated_password += new_character
 
-        return generated_password
+        return generated_password  # do something iwth for pop here
 
 
 @app.route("/complex")
