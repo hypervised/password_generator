@@ -10,7 +10,7 @@ from wtforms.widgets.core import CheckboxInput
 DEBUG = True
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config["SECRET_KEY"] = "somelongsecretkey"
+app.config["SECRET_KEY"] = "7d441f27d441f27567d441f2b6176a"
 
 
 class password:
@@ -109,26 +109,26 @@ class password:
         return self.character_types
 
     def generate(self):
+        lower = self.lower
+        upper = self.upper
+        special = self.special
+        numbers = self.numbers
+        ambiguos = self.ambiguos
         included_characters = self.complexity["include"]
+        if included_characters == []:
+            raise ValueError(
+                "The requested complexity does not meet the minimum complexity requirement"
+            )
         password_length = int(self.complexity["length"])
         generated_password = ""
+        password_complexity_sequence = []
         for character_count in range(password_length):
             selected_character_set = random.choice(included_characters)
-            if selected_character_set == "lower":
-                new_character = random.choice(self.lower)
-                generated_password += new_character
-            if selected_character_set == "upper":
-                new_character = random.choice(self.upper)
-                generated_password += new_character
-            if selected_character_set == "special":
-                new_character = random.choice(self.special)
-                generated_password += new_character
-            if selected_character_set == "ambiguos":
-                new_character = random.choice(self.ambiguos)
-                generated_password += new_character
-            if selected_character_set == "numbers":
-                new_character = random.choice(self.numbers)
-                generated_password += new_character
+            password_complexity_sequence.append(selected_character_set)
+        for selected_character_set in password_complexity_sequence:
+            new_character = random.choice(getattr(self, selected_character_set))
+            generated_password += new_character
+
         return generated_password
 
 
@@ -187,11 +187,13 @@ def custom():
         }
 
         pw = password(complexity=data)
-        returned_password = pw.generate()
-        return returned_password
+        try:
+            returned_password = pw.generate()
+            return returned_password
 
-    if not form.validate():
-        flash("Error: All the form fields are required")
+        except ValueError as ComplexityError:
+            print(ComplexityError.args)
+            return render_template("custom.html", form=form)
 
     return render_template("custom.html", form=form)
 
