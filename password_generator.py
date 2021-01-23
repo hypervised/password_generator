@@ -109,11 +109,6 @@ class password:
         return self.character_types
 
     def generate(self):
-        lower = self.lower
-        upper = self.upper
-        special = self.special
-        numbers = self.numbers
-        ambiguos = self.ambiguos
         included_characters = self.complexity["include"]
         if included_characters == []:
             raise ValueError(
