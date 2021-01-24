@@ -112,7 +112,8 @@ class password:
         included_characters = self.complexity["include"]
         if included_characters == []:
             raise ValueError(
-                "The requested complexity does not meet the minimum complexity requirement"
+                "Error: Please select at least one of: Lower Case, \
+                Upper Case, Special Characters, Numbers or Ambiguos"
             )
         password_length = int(self.complexity["length"])
         generated_password = ""
@@ -124,7 +125,7 @@ class password:
             new_character = random.choice(getattr(self, selected_character_set))
             generated_password += new_character
 
-        return generated_password  # do something iwth for pop here
+        return generated_password
 
 
 @app.route("/complex")
@@ -156,6 +157,7 @@ class password_form(Form):
     special = CheckboxInput("special:")
     number = CheckboxInput("number:")
     ambiguos = CheckboxInput("ambiguos:")
+    returned_password = TextField("password")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -184,11 +186,13 @@ def custom():
         pw = password(complexity=data)
         try:
             returned_password = pw.generate()
-            return returned_password
+            return render_template(
+                "custom.html", form=form, returned_password=returned_password
+            )
 
         except ValueError as ComplexityError:
-            print(ComplexityError.args)
-            return render_template("custom.html", form=form)
+            complexity_error = str(ComplexityError.args)
+            flash(complexity_error)
 
     return render_template("custom.html", form=form)
 

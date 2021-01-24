@@ -6,7 +6,8 @@
     <form action="" method="post" role="form">
 
         <div class="form-group">
-            <input type="number" class="form-control" id="length" name="length" placeholder="Length">
+            <input type="number" class="form-control" id="length" name="length" placeholder="Length" ,
+                value="{{ request.form['length'] }}">
             <br>
             <input type="checkbox" class="form-control" id="lower" name="lower" style="float: left; margin-top: 5px;>">
             <div style="margin-left: 25px;">
@@ -38,16 +39,22 @@
         </div>
         <button type="submit" class="btn btn-success">Generate Password</button>
         <br>
-        <div>
-            <input type="text" class="text" id="password" name="password" placeholder="Password">
+    </form>
+
+    <body>
+        <h3>Password: </h3>
+        <div style="margin-left: 25px;">
+            {{ returned_password }}
         </div>
-    </form>{% with messages = get_flashed_messages(with_categories=true) %}
+    </body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
 
     {% for message in messages %}
-    {% if "Error" not in message[1]: %}
+    {% if "Error" in message[1]: %}
     <div class="alert alert-info">
-        <strong>Password Generated! </strong>
+        <strong> {{ message[1] }} </strong>
     </div>
     {% endif %}
 
