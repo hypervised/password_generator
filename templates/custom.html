@@ -1,12 +1,15 @@
 <title>Generate Password</title>
 <div class="container">
+    <link rel="stylesheet" media="screen" href="static/bootstrap.min.css">
+    <link rel="stylesheet" href="static/bootstrap-theme.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <body style="background-color: white;"></body>
     <h2 style="color: black;">Generate Password</h2>
     <form action="" method="post" role="form">
 
         <div class="form-group">
-            <input type="number" class="form-control" id="length" name="length" placeholder="Length" ,
+            <input type="number" class="form-control" id="length" min=1 max=128 name="length" placeholder="Length" ,
                 value="{{ request.form['length'] }}">
             <br>
             <input type="checkbox" class="form-control" id="lower" name="lower" style="float: left; margin-top: 5px;>">
