@@ -1,16 +1,4 @@
 import random
-import json
-from flask import Flask, render_template, flash, request
-from werkzeug.exceptions import InternalServerError
-from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
-from wtforms.fields.core import BooleanField, DecimalField, IntegerField
-from wtforms.widgets.core import CheckboxInput
-
-# Flask config.
-DEBUG = True
-app = Flask(__name__)
-app.config.from_object(__name__)
-app.config["SECRET_KEY"] = "7d441f27d441f27567d441f2b6176a"
 
 
 class password:
@@ -128,74 +116,10 @@ class password:
         return generated_password
 
 
-@app.route("/complex")
-def generate_strong_password():
-    data = {
-        "length": 16,
-        "include": ["lower", "upper", "numbers", "special", "ambiguous"],
-    }
-    pw = password(complexity=data)
-    returned_password = pw.generate()
-    return returned_password
+complexity = {
+    "length": 16,
+    "include": ["lower", "upper", "special", "numbers", "ambiguous"],
+}
+pw = password(complexity).generate()
 
-
-@app.route("/simple")
-def generate_weak_password():
-    data = {
-        "length": 6,
-        "include": ["lower", "numbers"],
-    }
-    pw = password(complexity=data)
-    returned_password = pw.generate()
-    return returned_password
-
-
-class password_form(Form):
-    length = IntegerField("length:", validators=[validators.required()])
-    lower = BooleanField("lower:")
-    upper = CheckboxInput("upper:")
-    special = CheckboxInput("special:")
-    number = CheckboxInput("number:")
-    ambiguous = CheckboxInput("ambiguous:")
-    returned_password = TextField("password")
-
-
-@app.route("/", methods=["GET", "POST"])
-def custom():
-    form = password_form(request.form)
-
-    if form.validate():
-        include = []
-        length = request.form["length"]
-
-        character_types = ["lower", "upper", "special", "numbers", "ambiguous"]
-        for character_type in character_types:
-            try:
-                status = request.form[character_type]
-                if status == "on":
-                    include.append(character_type)
-
-            except KeyError:
-                pass
-
-        data = {
-            "length": length,
-            "include": include,
-        }
-
-        pw = password(complexity=data)
-        try:
-            returned_password = pw.generate()
-            return render_template(
-                "custom.html", form=form, returned_password=returned_password
-            )
-
-        except ValueError as ComplexityError:
-            complexity_error = str(ComplexityError.args)
-            flash(complexity_error)
-
-    return render_template("custom.html", form=form)
-
-
-if __name__ == "__main__":
-    app.run(port=8080)
+print(pw)
