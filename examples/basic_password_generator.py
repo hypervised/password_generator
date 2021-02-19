@@ -104,6 +104,8 @@ class password:
                 Upper Case, Special Characters, Numbers or ambiguous"
             )
         password_length = int(self.complexity["length"])
+        if password_length < 1:
+            raise ValueError("Error: Password length must be 1 or greater")
         generated_password = ""
         password_complexity_sequence = []
         for character_count in range(password_length):
@@ -117,9 +119,11 @@ class password:
 
 
 complexity = {
-    "length": 16,
+    "length": -9,
     "include": ["lower", "upper", "special", "numbers", "ambiguous"],
 }
 pw = password(complexity).generate()
+
+pw_gen = password("")
 
 print(pw)
