@@ -119,7 +119,7 @@ class password:
 
 
 complexity = {
-    "length": -9,
+    "length": 16,
     "include": ["lower", "upper", "special", "numbers", "ambiguous"],
 }
 pw = password(complexity).generate()
