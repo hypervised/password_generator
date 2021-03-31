@@ -1,6 +1,5 @@
 import random
 import json
-from flask.templating import render_template_string
 from multidict import MultiDict
 from flask import Flask, render_template, flash, request, session
 from werkzeug.exceptions import InternalServerError
@@ -13,7 +12,7 @@ from wtforms.widgets.core import CheckboxInput
 DEBUG = True
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config["SECRET_KEY"] = "7d441f27d441f27567d441f2b6176a"
+app.config["SECRET_KEY"] = "somesecret1234"
 
 
 class password:
