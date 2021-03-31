@@ -1,7 +1,10 @@
 import random
 import json
-from flask import Flask, render_template, flash, request
+from flask.templating import render_template_string
+from multidict import MultiDict
+from flask import Flask, render_template, flash, request, session
 from werkzeug.exceptions import InternalServerError
+from werkzeug.utils import html
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 from wtforms.fields.core import BooleanField, DecimalField, IntegerField
 from wtforms.widgets.core import CheckboxInput
